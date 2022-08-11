@@ -1,4 +1,4 @@
-from .sorcier import Sorcier
+from hp_core.sorcier import Sorcier
 
 
 class Professeur(Sorcier):

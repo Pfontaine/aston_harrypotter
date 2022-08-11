@@ -1,7 +1,7 @@
 import random
 
-from .categorie_sort import CategorieSort
-from .maison import Maison
+from hp_core.categorie_sort import CategorieSort
+from hp_core.maison import Maison
 
 
 class HPUtil:

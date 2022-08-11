@@ -1,4 +1,5 @@
-from .categorie_sort import CategorieSort
+from hp_core.categorie_sort import CategorieSort
+
 
 class Sort:
     def __init__(self, nom, couleur, categorie: CategorieSort, degats, vie) -> None:

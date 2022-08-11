@@ -1,6 +1,7 @@
-from .sorcier import Sorcier
-from .maison import Maison
-from .categorie_sort import CategorieSort
+from hp_core.sorcier import Sorcier
+from hp_core.maison import Maison
+from hp_core.categorie_sort import CategorieSort
+
 
 class Eleve(Sorcier):
     def __init__(self, nom: str, prenom: str, age: int, point_fort: CategorieSort, point_faible: CategorieSort, sorts: list, maison: Maison) -> None:
