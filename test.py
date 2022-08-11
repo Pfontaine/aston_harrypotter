@@ -5,8 +5,10 @@ def main():
     sorts = [
         Sort("Petrificus Totalus", "Blanc", CategorieSort.MALEFICE, 5, 0),
         Sort("Expeliarmus", "Blanc", CategorieSort.MALEFICE, 5, 0),
-        Sort("Vie", "Blanc", CategorieSort.ENCHANTEMENT, 0, 25),
-        Sort("Avada Kedavra", "Noir", CategorieSort.MALEFICE, 200, 0),
+        Sort("Vie", "Blanc", CategorieSort.ENCHANTEMENT, 0, 15),
+        Sort("Locomotor Mortis", "Noir", CategorieSort.MALEFICE, 10, 0),
+        Sort("Furunculus", "Noir", CategorieSort.ENCHANTEMENT, 13, 0),
+        Sort("Calvorio", "Noir", CategorieSort.METAMORPHOSE, 7, 0)
     ]
 
     eleve = PersonFactory.create_eleve("Potter", "Harry", 14, sorts, Maison.GRYFFONDOR)

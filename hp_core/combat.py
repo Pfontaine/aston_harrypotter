@@ -1,8 +1,7 @@
-import math
-import random
-
-from .eleve import Eleve
-from .professeur import Professeur
+from hp_core.eleve import Eleve
+from hp_core.professeur import Professeur
+from hp_core.sorcier import Sorcier
+from hp_core.sort import Sort
 
 
 class Combat:
@@ -12,6 +11,7 @@ class Combat:
         self.__round = 0
         self.__max_vie_eleve = eleve.vie
         self.__max_vie_professeur = professeur.vie
+        self.__attaquant_actuel = self.__eleve
 
     @property
     def eleve(self):
@@ -33,61 +33,46 @@ class Combat:
     def max_vie_professeur(self):
         return self.__max_vie_professeur
 
-    def tomber(self) -> bool:
-        aleatoire = random.randint(1, 100)
-        if aleatoire <= 10:
-            return True
-        else:
-            return False
+    def __tomber(self, sorcier: Sorcier):
+        if sorcier.tomber():
+            return f"{sorcier.nom_complet} est tombé et rate son sort"
 
     def executer_round(self) -> str:
         sort_eleve = self.__eleve.choisir_sort()
         sort_professeur = self.__professeur.choisir_sort()
+        message_a_afficher = ""
+
+        est_au_sol = self.detecter_chute()
+        if est_au_sol:
+            message_a_afficher += est_au_sol
+        else:
+            message_a_afficher = self.calculer_vie_joueur(self.__eleve, self.__professeur, sort_eleve, sort_professeur)
 
         self.__round += 1
 
-        if self.tomber():
-            return f"{self.__eleve.nom_complet} est tombé et rate son sort"
+        return message_a_afficher
 
-        if self.tomber():
-            return f"{self.__professeur.nom_complet} est tombé et rate son sort"
-
-        if sort_eleve != sort_professeur:
-            if sort_professeur.categorie == self.__professeur.point_fort \
-                    and sort_professeur.categorie == self.__eleve.point_fort:
-                return f"{self.__professeur.nom_complet} lance {sort_professeur}, la catégorie du sort est le point " \
-                       f"fort du professeur mais l'élève a le même point fort.\nAucun dégat "
-
-            if sort_eleve.categorie == self.__professeur.point_fort \
-                    and sort_eleve.categorie == self.__eleve.point_fort:
-                return f"{self.__eleve.nom_complet} lance {sort_eleve}, la catégorie du sort est le point " \
-                       f"fort de l'élève mais le professeur a le même point fort.\nAucun dégat "
-
-            texte_a_retourner = ""
-            if sort_professeur.categorie == self.__eleve.point_faible:
-                atk = sort_professeur.degats * 2
-                self.__eleve.vie -= atk
-                texte_a_retourner += f"\n{self.__professeur.nom_complet} lance {sort_professeur.nom}, c'est très " \
-                                     f"efficace, {self.__eleve.nom_complet} perd {atk}PV "
-
-            if sort_professeur.categorie == self.__eleve.point_fort:
-                atk = math.ceil(sort_professeur.degats / 2)
-                self.__eleve.vie -= atk
-                texte_a_retourner += f"\n{self.__professeur.nom_complet} lance {sort_professeur.nom}, ce n'est pas " \
-                                     f"très efficace, {self.__eleve.nom_complet} perd {atk}PV "
-
-            if sort_eleve.categorie == self.__professeur.point_faible:
-                atk = sort_eleve.degats * 2
-                self.__professeur.vie -= atk
-                texte_a_retourner += f"\n{self.__eleve.nom_complet} lance {sort_eleve.nom}, c'est très efficace," \
-                                     f" {self.__professeur.nom_complet} perd {atk}PV"
-
-            if sort_eleve.categorie == self.__professeur.point_fort:
-                atk = math.ceil(sort_eleve.degats / 2)
-                self.__professeur.vie -= atk
-                texte_a_retourner += f"\n{self.__eleve.nom_complet} lance {sort_eleve.nom}, ce n'est pas très" \
-                                     f" efficace, {self.__professeur.nom_complet} perd {atk}PV "
-
-            return texte_a_retourner
+    def detecter_chute(self) -> str | bool:
+        if self.__eleve.tomber():
+            return self.__tomber(self.__eleve)
+        elif self.__professeur.tomber():
+            return self.__tomber(self.__professeur)
         else:
-            return f"{self.__eleve.nom_complet} et {self.__professeur.nom_complet} lance le même sort, rien ne se passe"
+            return False
+
+    def calculer_vie_joueur(self, eleve: Eleve, professeur: Professeur, sort_eleve: Sort, sort_professeur: Sort) -> str:
+        message = ""
+        degat_eleve = eleve.lancer_sort(sort_eleve, professeur, sort_professeur)
+        if degat_eleve[1] > 0:
+            eleve.vie += degat_eleve[1] if degat_eleve[1] + eleve.vie < self.__max_vie_eleve else self.__max_vie_eleve - eleve.vie
+        else:
+            professeur.vie += degat_eleve[1]
+        message += degat_eleve[0] + "\n"
+        degat_professeur = professeur.lancer_sort(sort_professeur, eleve, sort_eleve)
+        if degat_professeur[1] > 0:
+            professeur.vie += degat_professeur[1] if degat_professeur[1] + professeur.vie < self.__max_vie_professeur else self.__max_vie_professeur - professeur.vie
+        else:
+            eleve.vie += degat_professeur[1]
+        message += degat_professeur[0]
+
+        return message
