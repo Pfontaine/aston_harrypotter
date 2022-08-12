@@ -2,6 +2,9 @@ from enum import Enum
 
 
 class Maison(Enum):
+    """
+    Enumération représentant les 4 maisons de Poudlard
+    """
     SERDAIGLE = ("Serdaigle", "bleu")
     POUFSOUFFLE = ("Poufsouffle", "jaune")
     GRYFFONDOR = ("Gryffondor", "rouge")

@@ -2,6 +2,9 @@ from enum import Enum
 
 
 class CategorieSort(Enum):
+    """
+    Enumération des catégories de sort
+    """
     ENCHANTEMENT = ("Enchantement")
     MALEDICTION = ("Malediction")
     METAMORPHOSE = ("Métamorphose")

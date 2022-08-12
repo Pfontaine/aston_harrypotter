@@ -4,6 +4,9 @@ from hp_core.categorie_sort import CategorieSort
 
 
 class Eleve(Sorcier):
+    """
+    Classe réprésentant une personne de type élève
+    """
     def __init__(self, nom: str, prenom: str, age: int, point_fort: CategorieSort, point_faible: CategorieSort, sorts: list, maison: Maison) -> None:
         super().__init__(nom, prenom, age, point_fort, point_faible, sorts)
         self.__maison = maison

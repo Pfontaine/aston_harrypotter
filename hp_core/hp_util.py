@@ -5,6 +5,9 @@ from hp_core.maison import Maison
 
 
 class HPUtil:
+    """
+    Collection de méthodes statique utilitaires
+    """
     @staticmethod
     def choixpeau():
         """

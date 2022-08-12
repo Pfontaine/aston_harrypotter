@@ -7,6 +7,9 @@ from hp_core.exceptions.sort_error import SortError
 
 
 class PersonFactory:
+    """
+    Différentes factory pour créer des personnes
+    """
     @staticmethod
     def create_eleve(nom: str, prenom: str, age: int, sorts: list,
                      maison: Maison = None, point_fort: CategorieSort = None,
@@ -46,7 +49,9 @@ class PersonFactory:
     @staticmethod
     def create_professeur(nom: str, prenom: str, age: int, sorts: list,
                           point_fort: CategorieSort = None, point_faible: CategorieSort = None) -> Professeur:
-
+        """
+        Méthode statique permettant de créer un professeur
+        """
         if point_fort is None:
             point_fort = HPUtil.obtenir_categorie_sort_aleatoire()
 

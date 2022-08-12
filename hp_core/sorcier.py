@@ -42,17 +42,34 @@ class Sorcier(Personne):
         self.__sorts = value
 
     def choisir_sort(self) -> Sort:
+        """
+        Choisi un sort aléatoire que le sorcier connait
+        :return: Objet de type sort
+        """
         aleatoire = random.randint(0, len(self.__sorts) - 1)
         return self.__sorts[aleatoire]
 
-    def tomber(self) -> bool:
+    def tomber(self, chance: int = 10) -> bool:
+        """
+        Détermine si le sorcier tombe au sol en lançant son sort
+        :param chance: Pourcentage de chance de tomber (entre 0 et 100)
+        :return: True si le sorcier tombe
+        """
         aleatoire = random.randint(1, 100)
-        if aleatoire <= 10:
+        if aleatoire <= chance:
             return True
         else:
             return False
 
-    def lancer_sort(self, sort_a_lancer: Sort, opposant: Type[Sorcier], sort_opposant: Sort):
+    def lancer_sort(self, sort_a_lancer: Sort, opposant: Type[Sorcier], sort_opposant: Sort) -> tuple[str, int]:
+        """
+        Retourne la description de l'effet du sort sous forme d'une chaine de caractère ainsi que les dégats effectué
+        Les dégats < 0 font des degats à l'adversaire, les degat > 0 soigne le lanceur
+        :param sort_a_lancer: Objet sort qui sera lancé
+        :param opposant: Objet Sorcier ou enfant de Sorcier
+        :param sort_opposant: Sort lancé par l'opposant
+        :return: Tuple formé sous la forme <chaine description>, <degat>
+        """
 
         if type(sort_opposant) is not Sort or type(sort_a_lancer) is not Sort:
             raise TypeError("Un objet de type Sort doit être fourni")

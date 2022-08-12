@@ -5,6 +5,9 @@ from hp_core.sort import Sort
 
 
 class Combat:
+    """
+    Classe gérant le combat entre deux personnes
+    """
     def __init__(self, eleve: Eleve, professeur: Professeur):
         self.__eleve = eleve
         self.__professeur = professeur
@@ -38,6 +41,10 @@ class Combat:
             return f"{sorcier.nom_complet} est tombé et rate son sort"
 
     def executer_round(self) -> str:
+        """
+        Lance un tour de combat
+        :return: Retourne le texte du journal de combat pour ce tour
+        """
         sort_eleve = self.__eleve.choisir_sort()
         sort_professeur = self.__professeur.choisir_sort()
         message_a_afficher = ""
@@ -53,6 +60,10 @@ class Combat:
         return message_a_afficher
 
     def detecter_chute(self) -> str | bool:
+        """
+        Detecte si un des personnages va tomber dans le tour
+        :return: Renvoie le texte à ajouter au journal de combat ou False si aucunes des deux personnes n'est tombé
+        """
         if self.__eleve.tomber():
             return self.__tomber(self.__eleve)
         elif self.__professeur.tomber():
@@ -61,6 +72,15 @@ class Combat:
             return False
 
     def calculer_vie_joueur(self, eleve: Eleve, professeur: Professeur, sort_eleve: Sort, sort_professeur: Sort) -> str:
+        """
+        Calcule les nouveaux point de vie des personnes
+        :param eleve: Objet représentant l'élève
+        :param professeur: Objet représentant le professeur
+        :param sort_eleve: Sort qui est lancé par l'élève
+        :param sort_professeur: Sort qui est lancé par le professeur
+        :return: Renvoi du texte pour le journal de combat
+        :todo: Refactoriser
+        """
         message = ""
         degat_eleve = eleve.lancer_sort(sort_eleve, professeur, sort_professeur)
         if degat_eleve[1] > 0:
